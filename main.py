@@ -11,7 +11,6 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.ensemble import AdaBoostClassifier
 
 from scipy.stats import randint as sp_randint
 
@@ -23,8 +22,6 @@ import matplotlib.pyplot as plt
 
 #For Neural Network
 from sklearn.neural_network import MLPClassifier
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split
 
 
 
@@ -56,6 +53,7 @@ print(pd.concat([variance_ratios, components], axis = 1))
 
 
 #Feature selection
+#correlation to the diagnosis
 tst = df.corr()['diagnosis'].copy()
 tst = tst.drop('diagnosis')
 tst.sort_values(inplace=True)
@@ -118,7 +116,7 @@ print (observables.ix[1])
 
 
 
-'''
+
 #------------------------KNN
 knn = KNeighborsClassifier()
 
@@ -129,7 +127,7 @@ algorithm = ['auto', 'ball_tree', 'kd_tree', 'brute']
 param_grid = {'n_neighbors': k_range, 'leaf_size': leaf_size, 'weights': weight_options, 'algorithm': algorithm}
 
 #Randomizedsearch is a tuning algorithm that accepts which algorithm to use (knn) and the
-# parameter(param_grid) to pass with the algorith and then the parameter for itself i.e the tuning algo
+# parameter(param_grid) to pass with the algorithm and then the parameter for itself i.e the tuning algo
 rand_knn = RandomizedSearchCV(knn, param_grid, cv=10, scoring="accuracy", n_iter=100, random_state=42)
 rand_knn.fit(X,y)
 
@@ -138,8 +136,8 @@ print(rand_knn.best_params_)
 print(rand_knn.best_estimator_)
 #print(rand_knn.predict([17.99,10.38,122.8,1001,0.2776,0.3001,0.1471,2019,184.6]))
 
-'''
-'''
+
+
 #--------------------------Decision Tree Classifier
 dt_clf = DecisionTreeClassifier(random_state=42)
 
@@ -184,24 +182,18 @@ rand_rf.fit(X,y)
 print(rand_rf.best_score_)
 print(rand_rf.best_params_)
 print(rand_rf.best_estimator_)
-'''
 
-'''
+
+
 #--------------------------------------Neural Network
 mlp = MLPClassifier(hidden_layer_sizes=(9,9,1),max_iter=1410)
 alphas = np.array([1,0.1,0.01,0.001,0.0001,0])
 grid_nn = GridSearchCV(estimator=mlp, param_grid=dict(alpha=alphas))
 grid_nn.fit(X, y)
 print(grid_nn.best_score_)
-'''
 
 
 
-'''
-import gui as g
-def predictor(x):
-    print(eval(x).predict([float(g.entry1.get()),float(g.entry2.get()),float(g.entry3.get()),float(g.entry4.get()),float(g.entry5.get()),float(g.entry6.get()),float(g.entry7.get()),float(g.entry8.get()),float(g.entry9.get())]))
-'''
 
 def predictor(x,e1,e2,e3,e4,e5,e6,e7,e8,e9):
-    print(eval(x).predict([e1,e2,e3,e4,e5,e6,e7,e8,e9]))
+    return(eval(x).predict([e1,e2,e3,e4,e5,e6,e7,e8,e9]))
